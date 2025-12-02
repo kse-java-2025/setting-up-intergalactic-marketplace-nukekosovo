@@ -31,7 +31,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Product'
         '400':
-          description: Validation failed (e.g. negative price)
+          description: Validation failed
           content:
             application/json:
               schema:
@@ -44,6 +44,21 @@ paths:
         schema:
           type: integer
           format: int64
+    get:
+      summary: Retrieve a product by ID
+      responses:
+        '200':
+          description: Successfully returned the product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     put:
       summary: Update a product
       requestBody:
@@ -59,11 +74,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       summary: Delete a product by ID
       responses:
         '204':
           description: Product deleted successfully
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
     Category:
