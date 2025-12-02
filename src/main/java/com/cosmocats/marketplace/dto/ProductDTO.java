@@ -5,6 +5,8 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
+import com.cosmocats.marketplace.validation.CosmicWordCheck;
+
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -15,6 +17,7 @@ public class ProductDTO {
     private Long id;
 
     @NotBlank(message = "Name cannot be empty")
+    @CosmicWordCheck()
     private String name;
 
     @Valid
