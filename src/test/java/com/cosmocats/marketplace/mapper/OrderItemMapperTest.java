@@ -34,7 +34,7 @@ class OrderItemMapperTest {
 
     @Test
     void toDTO_shouldMapCorrectly() {
-        OrderItem entity = new OrderItem(1L, new Product(), 2L, BigDecimal.TEN);
+        OrderItem entity = new OrderItem(1L, null, new Product(), 2L, BigDecimal.TEN);
         when(productMapper.toDTO(any())).thenReturn(new ProductDTO());
 
         OrderItemDTO dto = orderItemMapper.toDTO(entity);
