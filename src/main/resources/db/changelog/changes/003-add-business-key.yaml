@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-business-key-to-orders
+      author: you
+      changes:
+        - addColumn:
+            tableName: orders
+            columns:
+              - column:
+                  name: business_key
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    unique: true
