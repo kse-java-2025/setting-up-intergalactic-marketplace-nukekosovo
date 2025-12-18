@@ -4,13 +4,11 @@ import com.cosmocats.marketplace.domain.CartItem;
 import com.cosmocats.marketplace.domain.Product;
 import com.cosmocats.marketplace.dto.CartItemDTO;
 import com.cosmocats.marketplace.dto.ProductDTO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,16 +17,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CartItemMapperTest {
 
-    private CartItemMapper cartItemMapper;
+    @InjectMocks
+    private CartItemMapperImpl cartItemMapper;
 
     @Mock
     private ProductMapper productMapper;
-
-    @BeforeEach
-    void setUp() {
-        cartItemMapper = Mappers.getMapper(CartItemMapper.class);
-        ReflectionTestUtils.setField(cartItemMapper, "productMapper", productMapper);
-    }
 
     @Test
     void toDTO_shouldMapCorrectly() {
@@ -42,10 +35,10 @@ class CartItemMapperTest {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(1L);
 
-        when(productMapper.toDTO(any(Product.class))).thenReturn(productDTO);
+        when(productMapper.toProductDTO(any(Product.class))).thenReturn(productDTO);
 
         // Act
-        CartItemDTO dto = cartItemMapper.toDTO(cartItem);
+        CartItemDTO dto = cartItemMapper.toCartItemDTO(cartItem);
 
         // Assert
         assertNotNull(dto);
@@ -66,10 +59,10 @@ class CartItemMapperTest {
         Product product = new Product();
         product.setId(1L);
 
-        when(productMapper.toEntity(any(ProductDTO.class))).thenReturn(product);
+        when(productMapper.toProduct(any(ProductDTO.class))).thenReturn(product);
 
         // Act
-        CartItem entity = cartItemMapper.toEntity(dto);
+        CartItem entity = cartItemMapper.toCartItem(dto);
 
         // Assert
         assertNotNull(entity);

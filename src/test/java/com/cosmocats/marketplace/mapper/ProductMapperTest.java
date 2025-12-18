@@ -4,9 +4,7 @@ import com.cosmocats.marketplace.domain.Category;
 import com.cosmocats.marketplace.domain.Product;
 import com.cosmocats.marketplace.dto.CategoryDTO;
 import com.cosmocats.marketplace.dto.ProductDTO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
 
@@ -14,12 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProductMapperTest {
 
-    private ProductMapper productMapper;
-
-    @BeforeEach
-    void setUp() {
-        productMapper = Mappers.getMapper(ProductMapper.class);
-    }
+    private final ProductMapper productMapper = new ProductMapperImpl();
 
     @Test
     void toDTO_shouldMapProductAndCategory() {
@@ -28,7 +21,7 @@ class ProductMapperTest {
         Product product = new Product(1L, "Milk", category, "White", BigDecimal.TEN, 5L);
 
         // Act
-        ProductDTO dto = productMapper.toDTO(product);
+        ProductDTO dto = productMapper.toProductDTO(product);
 
         // Assert
         assertNotNull(dto);
@@ -53,7 +46,7 @@ class ProductMapperTest {
         prodDto.setPrice(BigDecimal.TEN);
 
         // Act
-        Product entity = productMapper.toEntity(prodDto);
+        Product entity = productMapper.toProduct(prodDto);
 
         // Assert
         assertNotNull(entity);

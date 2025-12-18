@@ -38,17 +38,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setTitle("Resource Not Found");
         return problemDetail;
     }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFound(
-            ResourceNotFoundException ex, HttpServletRequest request) {
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("status", HttpStatus.NOT_FOUND.value());
-        body.put("error", "Not Found");
-        body.put("message", ex.getMessage());
-        body.put("path", request.getRequestURI());
-
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-    }
 }

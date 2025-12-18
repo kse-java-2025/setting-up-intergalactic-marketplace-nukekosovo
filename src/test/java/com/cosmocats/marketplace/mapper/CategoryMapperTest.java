@@ -2,26 +2,19 @@ package com.cosmocats.marketplace.mapper;
 
 import com.cosmocats.marketplace.domain.Category;
 import com.cosmocats.marketplace.dto.CategoryDTO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryMapperTest {
 
-    private CategoryMapper mapper;
-
-    @BeforeEach
-    void setUp() {
-        mapper = Mappers.getMapper(CategoryMapper.class);
-    }
+    private final CategoryMapper mapper = new CategoryMapperImpl();
 
     @Test
     void toDTO_shouldMapFieldsCorrectly() {
         Category entity = new Category(1L, "Toys", "Fun stuff");
 
-        CategoryDTO dto = mapper.toDTO(entity);
+        CategoryDTO dto = mapper.toCategoryDTO(entity);
 
         assertNotNull(dto);
         assertEquals(1L, dto.getId());
@@ -36,7 +29,7 @@ class CategoryMapperTest {
         dto.setName("Toys");
         dto.setDescription("Fun stuff");
 
-        Category entity = mapper.toEntity(dto);
+        Category entity = mapper.toCategory(dto);
 
         assertNotNull(entity);
         assertEquals(1L, entity.getId());
