@@ -6,8 +6,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {ProductMapper.class})
 public interface OrderItemMapper {
-    OrderItemDTO toDTO(OrderItem orderItem);
+    OrderItemDTO toOrderItemDTO(OrderItem orderItem);
 
     @Mapping(target = "order", ignore = true)
-    OrderItem toEntity(OrderItemDTO orderItemDTO);
+    OrderItem toOrderItem(OrderItemDTO orderItemDTO);
 }

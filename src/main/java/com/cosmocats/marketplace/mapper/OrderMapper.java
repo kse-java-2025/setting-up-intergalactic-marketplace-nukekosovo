@@ -7,10 +7,10 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {OrderItemMapper.class})
 public interface OrderMapper {
-    @Mapping(source = "status", target = "orderStatus") // Fix DTO mapping
-    OrderDTO toDTO(Order order);
+    @Mapping(source = "status", target = "orderStatus")
+    OrderDTO toOrderDTO(Order order);
 
-    @Mapping(source = "orderStatus", target = "status") // Fix Entity mapping
-    @Mapping(target = "businessKey", ignore = true)     // Ignore internal ID
-    Order toEntity(OrderDTO orderDTO);
+    @Mapping(source = "orderStatus", target = "status")
+    @Mapping(target = "businessKey", ignore = true)
+    Order toOrder(OrderDTO orderDTO);
 }

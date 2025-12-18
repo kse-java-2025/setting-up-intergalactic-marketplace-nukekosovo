@@ -39,6 +39,7 @@ class ProductServiceTest {
 
     @Test
     void createProduct_shouldReturnCreatedProduct() {
+        // Arrange
         ProductDTO inputDto = new ProductDTO();
         inputDto.setName("Cosmic Milk");
         inputDto.setPrice(BigDecimal.TEN);
@@ -52,26 +53,28 @@ class ProductServiceTest {
         categoryEntity.setId(10L);
         productEntity.setCategory(categoryEntity);
 
-        when(productMapper.toEntity(any())).thenReturn(productEntity);
-        // ✅ Mock the DB calls
+        when(productMapper.toProduct(any())).thenReturn(productEntity);
         when(categoryRepository.findById(10L)).thenReturn(Optional.of(categoryEntity));
         when(productRepository.save(any())).thenReturn(productEntity);
-        when(productMapper.toDTO(any())).thenReturn(inputDto);
+        when(productMapper.toProductDTO(any())).thenReturn(inputDto);
 
+        // Act
         ProductDTO result = productService.createProduct(inputDto);
 
+        // Assert
         assertNotNull(result);
         assertEquals("Cosmic Milk", result.getName());
     }
 
     @Test
     void getProductById_shouldReturnProduct_whenFound() {
+        // Arrange
+        ProductDTO dto = new ProductDTO();
         Product entity = new Product();
         entity.setId(1L);
-        ProductDTO dto = new ProductDTO();
 
         when(productRepository.findById(1L)).thenReturn(Optional.of(entity));
-        when(productMapper.toDTO(entity)).thenReturn(dto);
+        when(productMapper.toProductDTO(entity)).thenReturn(dto);
 
         assertNotNull(productService.getProductById(1L));
     }
@@ -85,7 +88,7 @@ class ProductServiceTest {
     @Test
     void getAllProducts_shouldReturnList() {
         when(productRepository.findAll()).thenReturn(List.of(new Product()));
-        when(productMapper.toDTO(any())).thenReturn(new ProductDTO());
+        when(productMapper.toProductDTO(any())).thenReturn(new ProductDTO());
 
         assertFalse(productService.getAllProducts().isEmpty());
     }
@@ -99,7 +102,7 @@ class ProductServiceTest {
 
         when(productRepository.findById(1L)).thenReturn(Optional.of(existingEntity));
         when(productRepository.save(any())).thenReturn(existingEntity);
-        when(productMapper.toDTO(any())).thenReturn(input);
+        when(productMapper.toProductDTO(any())).thenReturn(input);
 
         ProductDTO result = productService.updateProduct(1L, input);
         assertNotNull(result);

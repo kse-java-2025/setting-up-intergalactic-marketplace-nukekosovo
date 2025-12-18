@@ -27,48 +27,48 @@ public class ProductService {
     @Transactional
     @CheckFeature("cosmoCats")
     public ProductDTO createProduct(ProductDTO productDTO) {
-        Product product = productMapper.toEntity(productDTO);
+        Product product = productMapper.toProduct(productDTO);
 
         if (product.getCategory() != null && product.getCategory().getId() != null) {
             Category category = categoryRepository.findById(product.getCategory().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Category", product.getCategory().getId()));
             product.setCategory(category);
         }
 
         Product savedProduct = productRepository.save(product);
-        return productMapper.toDTO(savedProduct);
+        return productMapper.toProductDTO(savedProduct);
     }
 
     public ProductDTO getProductById(Long id) {
         return productRepository.findById(id)
-                .map(productMapper::toDTO)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+                .map(productMapper::toProductDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", id));
     }
 
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll().stream()
-                .map(productMapper::toDTO)
+                .map(productMapper::toProductDTO)
                 .collect(Collectors.toList());
     }
+
 
     @Transactional
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
         Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-
+                .orElseThrow(() -> new ResourceNotFoundException("Product", id));
         existingProduct.setName(productDTO.getName());
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setPrice(productDTO.getPrice());
         existingProduct.setQuantity(productDTO.getQuantity());
 
         Product updatedProduct = productRepository.save(existingProduct);
-        return productMapper.toDTO(updatedProduct);
+        return productMapper.toProductDTO(updatedProduct);
     }
 
     @Transactional
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Product not found");
+            throw new ResourceNotFoundException("Product", id);
         }
         productRepository.deleteById(id);
     }
