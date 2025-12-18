@@ -22,42 +22,42 @@ public class ProductService {
     private final AtomicLong idCounter = new AtomicLong(1);
 
     public ProductDTO createProduct(ProductDTO productDTO) {
-        Product product = productMapper.toEntity(productDTO);
+        Product product = productMapper.toProduct(productDTO);
         long newId = idCounter.getAndIncrement();
         product.setId(newId);
         productMap.put(newId, product);
-        return productMapper.toDTO(product);
+        return productMapper.toProductDTO(product);
     }
 
     public List<ProductDTO> getAllProducts() {
         return productMap.values()
                 .stream()
-                .map(productMapper::toDTO)
+                .map(productMapper::toProductDTO)
                 .toList();
     }
 
     public ProductDTO getProductById(Long id) {
         if (productMap.containsKey(id)) {
-            return productMapper.toDTO(productMap.get(id));
+            return productMapper.toProductDTO(productMap.get(id));
         }
-        throw new ResourceNotFoundException("Product with id " + id + " not found");
+        throw new ResourceNotFoundException("Product", id);
     }
 
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
         if (productMap.containsKey(id)) {
-            Product product = productMapper.toEntity(productDTO);
+            Product product = productMapper.toProduct(productDTO);
             product.setId(id);
             productMap.put(id, product);
-            return productMapper.toDTO(product);
+            return productMapper.toProductDTO(product);
         }
-        throw new ResourceNotFoundException("Product with id " + id + " not found");
+        throw new ResourceNotFoundException("Product", id);
     }
 
     public void deleteProduct(Long id) {
         if (productMap.containsKey(id)) {
             productMap.remove(id);
         } else {
-            throw new ResourceNotFoundException("Product with id " + id + " not found");
+            throw new ResourceNotFoundException("Product", id);
         }
     }
 }

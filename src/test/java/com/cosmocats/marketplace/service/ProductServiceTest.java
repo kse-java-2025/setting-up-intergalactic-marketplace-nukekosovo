@@ -33,8 +33,8 @@ class ProductServiceTest {
         Product productEntity = new Product();
         productEntity.setName("Test Product");
 
-        when(productMapper.toEntity(any())).thenReturn(productEntity);
-        when(productMapper.toDTO(any())).thenReturn(inputDto);
+        when(productMapper.toProduct(any())).thenReturn(productEntity);
+        when(productMapper.toProductDTO(any())).thenReturn(inputDto);
 
         // Act
         ProductDTO result = productService.createProduct(inputDto);
@@ -51,8 +51,8 @@ class ProductServiceTest {
         Product entity = new Product();
         entity.setId(1L);
 
-        when(productMapper.toEntity(any())).thenReturn(entity);
-        when(productMapper.toDTO(any())).thenReturn(dto);
+        when(productMapper.toProduct(any())).thenReturn(entity);
+        when(productMapper.toProductDTO(any())).thenReturn(dto);
 
         productService.createProduct(dto);
 
@@ -73,8 +73,8 @@ class ProductServiceTest {
         // Arrange
         ProductDTO dto = new ProductDTO();
         Product entity = new Product();
-        when(productMapper.toEntity(any())).thenReturn(entity);
-        when(productMapper.toDTO(any())).thenReturn(dto);
+        when(productMapper.toProduct(any())).thenReturn(entity);
+        when(productMapper.toProductDTO(any())).thenReturn(dto);
 
         productService.createProduct(dto);
 
@@ -91,8 +91,8 @@ class ProductServiceTest {
         ProductDTO dto = new ProductDTO();
         Product entity = new Product();
         entity.setId(1L);
-        when(productMapper.toEntity(any())).thenReturn(entity);
-        when(productMapper.toDTO(any())).thenReturn(dto);
+        when(productMapper.toProduct(any())).thenReturn(entity);
+        when(productMapper.toProductDTO(any())).thenReturn(dto);
 
         productService.createProduct(dto);
 
@@ -114,8 +114,8 @@ class ProductServiceTest {
         // Arrange
         ProductDTO dto = new ProductDTO();
         Product entity = new Product();
-        when(productMapper.toEntity(any())).thenReturn(entity);
-        when(productMapper.toDTO(any())).thenReturn(dto);
+        when(productMapper.toProduct(any())).thenReturn(entity);
+        when(productMapper.toProductDTO(any())).thenReturn(dto);
 
         productService.createProduct(dto);
 

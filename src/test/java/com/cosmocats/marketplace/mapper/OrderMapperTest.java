@@ -4,13 +4,11 @@ import com.cosmocats.marketplace.domain.Order;
 import com.cosmocats.marketplace.domain.OrderItem;
 import com.cosmocats.marketplace.dto.OrderDTO;
 import com.cosmocats.marketplace.dto.OrderItemDTO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
 
@@ -21,16 +19,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class OrderMapperTest {
 
-    private OrderMapper orderMapper;
+    @InjectMocks
+    private OrderMapperImpl orderMapper;
 
     @Mock
     private OrderItemMapper orderItemMapper;
-
-    @BeforeEach
-    void setUp() {
-        orderMapper = Mappers.getMapper(OrderMapper.class);
-        ReflectionTestUtils.setField(orderMapper, "orderItemMapper", orderItemMapper);
-    }
 
     @Test
     void toDTO_shouldMapOrderAndItems() {
@@ -38,9 +31,9 @@ class OrderMapperTest {
         order.setId(1L);
         order.setOrderItems(Collections.singletonList(new OrderItem()));
 
-        when(orderItemMapper.toDTO(any())).thenReturn(new OrderItemDTO());
+        when(orderItemMapper.toOrderItemDTO(any())).thenReturn(new OrderItemDTO());
 
-        OrderDTO dto = orderMapper.toDTO(order);
+        OrderDTO dto = orderMapper.toOrderDTO(order);
 
         assertNotNull(dto);
         assertEquals(1L, dto.getId());
@@ -53,9 +46,9 @@ class OrderMapperTest {
         dto.setId(1L);
         dto.setOrderItems(Collections.singletonList(new OrderItemDTO()));
 
-        when(orderItemMapper.toEntity(any())).thenReturn(new OrderItem());
+        when(orderItemMapper.toOrderItem(any())).thenReturn(new OrderItem());
 
-        Order entity = orderMapper.toEntity(dto);
+        Order entity = orderMapper.toOrder(dto);
 
         assertNotNull(entity);
         assertEquals(1L, entity.getId());

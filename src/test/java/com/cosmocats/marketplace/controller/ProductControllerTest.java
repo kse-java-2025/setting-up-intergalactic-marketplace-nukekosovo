@@ -6,7 +6,6 @@ import com.cosmocats.marketplace.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,11 +20,14 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.cosmocats.marketplace.exception.GlobalExceptionHandler;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@WebMvcTest(ProductController.class)
-@Import(GlobalExceptionHandler.class)
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 class ProductControllerTest {
 
     @Autowired
@@ -64,7 +66,7 @@ class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(input)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").exists());
+                .andExpect(jsonPath("$.detail").exists());
     }
 
     @Test
@@ -104,11 +106,11 @@ class ProductControllerTest {
     @Test
     void getProductById_shouldReturn404_whenNotFound() throws Exception {
         when(productService.getProductById(999L))
-                .thenThrow(new ResourceNotFoundException("Product not found"));
+                .thenThrow(new ResourceNotFoundException("Product", 999L));
 
         mockMvc.perform(get("/api/v1/products/999"))
                 .andExpect(status().isNotFound()) // Expects 404
-                .andExpect(jsonPath("$.error").value("Not Found"));
+                .andExpect(jsonPath("$.title").value("Resource Not Found"));
     }
 
     @Test
@@ -149,7 +151,7 @@ class ProductControllerTest {
         input.setQuantity(1L);
 
         when(productService.updateProduct(eq(999L), any()))
-                .thenThrow(new ResourceNotFoundException("Product not found"));
+                .thenThrow(new ResourceNotFoundException("Product", 999L));
 
         mockMvc.perform(put("/api/v1/products/999")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -165,7 +167,7 @@ class ProductControllerTest {
 
     @Test
     void deleteProduct_shouldReturn404_whenNotFound() throws Exception {
-        doThrow(new ResourceNotFoundException("Product not found"))
+        doThrow(new ResourceNotFoundException("Product", 999L))
                 .when(productService).deleteProduct(999L);
 
         mockMvc.perform(delete("/api/v1/products/999"))

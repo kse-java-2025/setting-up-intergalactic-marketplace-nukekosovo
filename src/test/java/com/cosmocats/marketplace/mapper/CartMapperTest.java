@@ -4,13 +4,11 @@ import com.cosmocats.marketplace.domain.Cart;
 import com.cosmocats.marketplace.domain.CartItem;
 import com.cosmocats.marketplace.dto.CartDTO;
 import com.cosmocats.marketplace.dto.CartItemDTO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
 
@@ -21,24 +19,19 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CartMapperTest {
 
-    private CartMapper cartMapper;
+    @InjectMocks
+    private CartMapperImpl cartMapper;
 
     @Mock
     private CartItemMapper cartItemMapper;
-
-    @BeforeEach
-    void setUp() {
-        cartMapper = Mappers.getMapper(CartMapper.class);
-        ReflectionTestUtils.setField(cartMapper, "cartItemMapper", cartItemMapper);
-    }
 
     @Test
     void toDTO_shouldMapCartAndItems() {
         Cart cart = new Cart(1L, 100L, Collections.singletonList(new CartItem()));
 
-        when(cartItemMapper.toDTO(any(CartItem.class))).thenReturn(new CartItemDTO());
+        when(cartItemMapper.toCartItemDTO(any(CartItem.class))).thenReturn(new CartItemDTO());
 
-        CartDTO dto = cartMapper.toDTO(cart);
+        CartDTO dto = cartMapper.toCartDTO(cart);
 
         assertNotNull(dto);
         assertEquals(1L, dto.getId());
@@ -53,9 +46,9 @@ class CartMapperTest {
         dto.setUserId(100L);
         dto.setCartItems(Collections.singletonList(new CartItemDTO()));
 
-        when(cartItemMapper.toEntity(any(CartItemDTO.class))).thenReturn(new CartItem());
+        when(cartItemMapper.toCartItem(any(CartItemDTO.class))).thenReturn(new CartItem());
 
-        Cart entity = cartMapper.toEntity(dto);
+        Cart entity = cartMapper.toCart(dto);
 
         assertNotNull(entity);
         assertEquals(1L, entity.getId());

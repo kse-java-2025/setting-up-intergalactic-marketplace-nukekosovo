@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = {CartItemMapper.class})
 public interface CartMapper {
-    CartDTO toDTO(Cart cart);
+    CartDTO toCartDTO(Cart cart);
 
-    Cart toEntity(CartDTO cartDTO);
+    Cart toCart(CartDTO cartDTO);
 }
