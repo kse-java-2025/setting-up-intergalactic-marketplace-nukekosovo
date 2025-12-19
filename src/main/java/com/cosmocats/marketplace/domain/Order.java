@@ -1,46 +1,23 @@
 package com.cosmocats.marketplace.domain;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.NaturalId;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-@Table(name = "orders") // 'order' is a reserved keyword in SQL, so we use 'orders'
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // Natural ID
-    @NaturalId
-    @Column(nullable = false, unique = true, updatable = false)
-    private UUID businessKey = UUID.randomUUID();
-
-    @Column(name = "user_id", nullable = false)
+    private UUID businessKey;
     private Long userId;
-
-    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private OrderStatus status;
-
-    @Column(name = "shipping_address", nullable = false)
     private String shippingAddress;
-
-    @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 }

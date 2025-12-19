@@ -27,7 +27,8 @@ class OrderItemMapperTest {
 
     @Test
     void toDTO_shouldMapCorrectly() {
-        OrderItem entity = new OrderItem(1L, null, new Product(), 2L, BigDecimal.TEN);
+        // Updated constructor to 4 arguments (id, product, quantity, price)
+        OrderItem entity = new OrderItem(1L, new Product(), 2L, BigDecimal.TEN);
         when(productMapper.toProductDTO(any())).thenReturn(new ProductDTO());
 
         OrderItemDTO dto = orderItemMapper.toOrderItemDTO(entity);
@@ -45,7 +46,7 @@ class OrderItemMapperTest {
         dto.setPrice(BigDecimal.TEN);
         dto.setProduct(new ProductDTO());
 
-        when(productMapper.toProduct(any())).thenReturn(new Product());
+        when(productMapper.toProduct(any(ProductDTO.class))).thenReturn(new Product());
 
         OrderItem entity = orderItemMapper.toOrderItem(dto);
 

@@ -46,7 +46,7 @@ class OrderMapperTest {
         dto.setId(1L);
         dto.setOrderItems(Collections.singletonList(new OrderItemDTO()));
 
-        when(orderItemMapper.toOrderItem(any())).thenReturn(new OrderItem());
+        when(orderItemMapper.toOrderItem((OrderItemDTO) any())).thenReturn(new OrderItem());
 
         Order entity = orderMapper.toOrder(dto);
 
