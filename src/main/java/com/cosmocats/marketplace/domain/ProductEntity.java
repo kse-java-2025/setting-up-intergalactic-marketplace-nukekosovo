@@ -11,7 +11,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ProductEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_generator")
+    @SequenceGenerator(name = "product_generator", sequenceName = "product_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

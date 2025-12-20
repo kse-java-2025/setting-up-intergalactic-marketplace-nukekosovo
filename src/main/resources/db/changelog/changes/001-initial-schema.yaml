@@ -1,5 +1,26 @@
 databaseChangeLog:
   - changeSet:
+      id: create-sequences
+      author: you
+      changes:
+        - createSequence:
+            sequenceName: category_id_seq
+            startValue: 1
+            incrementBy: 1
+        - createSequence:
+            sequenceName: product_id_seq
+            startValue: 1
+            incrementBy: 1
+        - createSequence:
+            sequenceName: orders_id_seq
+            startValue: 1
+            incrementBy: 1
+        - createSequence:
+            sequenceName: order_item_id_seq
+            startValue: 1
+            incrementBy: 1
+
+  - changeSet:
       id: create-category-table
       author: you
       changes:
@@ -9,7 +30,7 @@ databaseChangeLog:
               - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
+                  defaultValueComputed: nextval('category_id_seq')
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -33,33 +54,28 @@ databaseChangeLog:
               - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
+                  defaultValueComputed: nextval('product_id_seq')
                   constraints:
                     primaryKey: true
                     nullable: false
-
               - column:
                   name: name
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
-
               - column:
                   name: price
                   type: DECIMAL(10,2)
                   constraints:
                     nullable: false
-
               - column:
                   name: quantity
                   type: BIGINT
                   constraints:
                     nullable: false
-
               - column:
                   name: description
                   type: TEXT
-
               - column:
                   name: category_id
                   type: BIGINT
@@ -78,35 +94,30 @@ databaseChangeLog:
               - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
+                  defaultValueComputed: nextval('orders_id_seq')
                   constraints:
                     primaryKey: true
                     nullable: false
-
               - column:
                   name: user_id
                   type: BIGINT
                   constraints:
                     nullable: false
-
               - column:
                   name: created_at
                   type: TIMESTAMP
                   constraints:
                     nullable: false
-
               - column:
                   name: status
                   type: VARCHAR(50)
                   constraints:
                     nullable: false
-
               - column:
                   name: shipping_address
                   type: TEXT
                   constraints:
                     nullable: false
-
               - column:
                   name: total_price
                   type: DECIMAL(10,2)
@@ -123,11 +134,10 @@ databaseChangeLog:
               - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
+                  defaultValueComputed: nextval('order_item_id_seq')
                   constraints:
                     primaryKey: true
                     nullable: false
-
               - column:
                   name: order_id
                   type: BIGINT
@@ -135,7 +145,6 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_order_item_order
                     references: orders(id)
-
               - column:
                   name: product_id
                   type: BIGINT
@@ -143,13 +152,11 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_order_item_product
                     references: product(id)
-
               - column:
                   name: quantity
                   type: BIGINT
                   constraints:
                     nullable: false
-
               - column:
                   name: price
                   type: DECIMAL(10,2)
